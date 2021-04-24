@@ -1,0 +1,143 @@
+#include <bits/stdc++.h>
+using namespace std; 
+//#include <ext/pb_ds/assoc_container.hpp>
+//using namespace __gnu_pbds;
+//typedef tree<int,null_type,less<int>,rb_tree_tag, tree_order_statistics_node_update> indexed_set;
+ 
+typedef unsigned long long ull;
+typedef long long ll;
+typedef long double ld;
+typedef string str;
+ 
+#define io() ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+#define PB push_back
+#define MP make_pair
+#define F first
+#define S second
+#define sz(a) ((ll)(a).size())
+#define mset(a , b) memset(a , b , sizeof(a))
+#define aout(a , n) for(int iii = 0 ; iii < n ; iii++) cout << a[iii] << " "; cout << '\n';
+#define aout2(a , n , m) for(ll iii = 0 ; iii < n ; iii++){for(ll jjj = 0 ; jjj < m ; jjj++){cout << a[iii][jjj] << " ";} cout << '\n';}
+#define deb(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
+void err(istream_iterator<string> it) {}
+template<typename T, typename... Args>
+void err(istream_iterator<string> it, T a, Args... args) {
+	cerr << *it << " = " << a << endl;
+	err(++it, args...);
+}
+ 
+void print(ll t){cerr<<t;}
+void print(int t){cerr<<t;}
+void print(str t){cerr<<t;}
+void print(char t){cerr<<t;}
+void print(ld t){cerr<<t;}
+void print(double t){cerr<<t;}
+void print(ull t){cerr<<t;}
+ 
+template <class T, class V> void print(pair <T, V> p);
+template <class T> void print(vector <T> v);
+template <class T> void print(set <T> v);
+template <class T, class V> void print(map <T, V> v);
+template <class T> void print(multiset <T> v);
+template <class T, class V> void print(pair <T, V> p){cerr<< "{";print(p.F);cerr<<",";print(p.S);cerr<<"}";}
+ 
+template <class T> void print(vector <T> v){cerr<<"[ ";for(T i: v){print(i);cerr<<" ";}cerr << "]";cerr << '\n';}
+template <class T> void print(set <T> v){cerr<<"[ ";for(T i: v){print(i);cerr<<" ";}cerr << "]";cerr << '\n';}
+template <class T> void print(multiset <T> v){cerr<<"[ ";for(T i: v){print(i);cerr<<" ";}cerr << "]";cerr << '\n';}
+template <class T, class V> void print(map <T, V> v){cerr<<"[ ";for(auto i: v){print(i);cerr<<" ";}cerr << "]";cerr << '\n';}
+//void print(indexed_set &v){cerr<<"[ ";for(int i: v){print(i);cerr<<" ";}cerr << "]";cerr << '\n';}
+ 
+template <class T> T egcd(T a , T b , T &x , T &y){T gcd , xt , yt;if(a == 0){gcd = b;x = 0 , y = 1;}else {gcd = egcd(b % a , a , xt , yt);x = yt - (b/a)*xt; y = xt;}return gcd;}
+template <class T> T expo(T base , T exp , T mod){T res = 1;base = base % mod;while (exp > 0){if (exp & 1)res = (res*base) % mod;exp = exp>>1;base = (base*base) % mod;}return res;}
+template <class T> T modinv(T a , T mod){T x , y; egcd<T>(a , mod , x , y);while(x < 0) x += mod; while(x >= mod) x -= mod; return x;}
+template <class T> T modinvfermat(T a , T mod){return expo<T>(a , mod - 2 , mod);}
+template <class T> bool rev(T a , T b){return a > b;}
+template <class T> ll maxpower(T a , T b){ll ans = 0;while(a > 0 && a % b == 0){ans++;a /= b;}return ans;}
+template <class T> T mceil(T a, T b){if(a % b == 0) return a/b; else return a/b + 1;}
+template <class T> T lcm(T a, T b){return (a)/__gcd<T>(a, b)*(b);}
+ 
+const ll MOD = 1e9 + 7;
+//const ll MOD = (119 << 23) + 1;
+const ll INF = (ll) 1e18;
+const ld PI = acos((ld)-1);
+const ld EPS = 1e-9;
+const int MAX = 2e8;
+const int N = 1e6 + 2;
+ 
+///****************** SOLUTION STARTS HERE ***********************///
+///===============================================================///
+ 
+vector<int> edges[N];
+ 
+void solve() {
+	bool vis[N];
+	int done[N], p[N];
+	for (int i = 0; i < N; i++) {
+		edges[i].clear();
+		vis[i] = 0;
+		done[i] = 0;
+		p[i] = 0;
+	}
+	int n, r, m;
+	cin >> n >> r >> m;
+	for (int i = 0; i < r; i++) {
+		int a, b;
+		cin >> a >> b;
+		--a; --b;
+		edges[a].push_back(b);
+		edges[b].push_back(a);
+	}
+	vector<pair<int, int>> sold(m);
+	for (int i = 0; i < m; i++) {
+		int k, s;
+		cin >> k >> s;
+		--k;
+		sold[i].first = k;
+		sold[i].second = s;
+	}
+	bool ok = true;
+	for (int i = 0; i < m; i++) {
+		int src = sold[i].first;
+		int st = sold[i].second;
+		queue<int> q;
+		q.push(src);
+		vis[src] = 1;
+		p[src] = 0;
+		while (!q.empty()) {
+			int u = q.front(); q.pop();
+			if (p[u] > st) {
+				break;
+			}
+			if (done[u] == 1) {
+				ok = false; break;
+			}
+			for (int v : edges[u]) {
+				if (vis[v] == 0) {
+					q.push(v);
+					vis[v] = 1;
+					p[v] = p[u] + 1;
+				}
+			}
+			done[u] = 1;
+		}
+		if (!ok) break;
+	}
+	for (int i = 0; i < n; i++) {
+		if (done[i] == 0) {
+			ok = false; break;
+		}
+	}
+	if (ok) printf("Yes\n");
+	else printf("No\n");
+}
+ 
+int main() {
+	io();
+	int TC = 1;
+	cin >> TC;
+	for (int i = 1; i <= TC; i++) {
+		//cout << "Case #" << i << ": ";
+		solve();
+	}
+	return 0;
+}
