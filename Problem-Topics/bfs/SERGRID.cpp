@@ -1,6 +1,24 @@
 #include <bits/stdc++.h>
-using namespace std;
-
+using namespace std; 
+//#include <ext/pb_ds/assoc_container.hpp>
+//using namespace __gnu_pbds;
+//typedef tree<int,null_type,less<int>,rb_tree_tag, tree_order_statistics_node_update> indexed_set;
+ 
+typedef unsigned long long ull;
+typedef long long ll;
+typedef long double ld;
+typedef string str;
+ 
+#define io() ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+#define PB push_back
+#define MP make_pair
+#define F first
+#define S second
+#define sz(a) ((int)(a).size())
+#define mset(a, b) memset(a, b, sizeof(a))
+#define print(a, n) for(int _i = 0 ; _i < n ; _i++) cout << a[_i] << " "; cout << '\n';
+#define print2(a, n, m) for(int _i = 0 ; _i < n ; _i++){for(int _j = 0 ; _j < m ; _j++){cout << a[_i][_j] << " ";} cout << '\n';}
+ 
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
     return os << "(" << p.first << ", " << p.second << ")";
@@ -36,12 +54,11 @@ ostream &operator << ( ostream & os, const map< F, S > &v ) {
             os << ", ";
         os << it -> first << " = " << it -> second ;
     }
-    return os << "]";
+    return os << "]\n";
 }
 #define deb(args...) do {cerr << #args << " = "; faltu(args); } while(0)
-#define debug(...) fprintf(stderr, __VA_ARGS__), fflush(stderr)
-#define time(d) for(long blockTime = 0; (blockTime == 0 ? (blockTime=clock()) != 0 : false); debug("%s Time : %.4fs", d, (double)(clock() - blockTime) / CLOCKS_PER_SEC))
-
+clock_t tStart = clock();
+#define timeStamp deb("Execution Time: ", (double)(clock() - tStart)/CLOCKS_PER_SEC)
 void faltu () {
     cerr << endl;
 }
@@ -56,58 +73,73 @@ void faltu( T arg, const hello &... rest) {
     cerr << arg << ' ';
     faltu(rest...);
 }
-
-const int N = 1300003;
-vector<int> edges[100003];
-bool vis[100003];
-int cnt;
-
-void dfs(int u) {
-	cnt++;
-	vis[u] = 1;
-	for (int v : edges[u]) {
-		if (!vis[v]) {
-			dfs(v);
-		}
+ 
+template <class T> T egcd(T a , T b , T &x , T &y){T gcd , xt , yt;if(a == 0){gcd = b;x = 0 , y = 1;}else {gcd = egcd(b % a , a , xt , yt);x = yt - (b/a)*xt; y = xt;}return gcd;}
+template <class T> T expo(T base , T exp , T mod){T res = 1;base = base % mod;while (exp > 0){if (exp & 1)res = (res*base) % mod;exp = exp>>1;base = (base*base) % mod;}return res;}
+template <class T> T modinv(T a , T mod){T x , y; egcd<T>(a , mod , x , y);while(x < 0) x += mod; while(x >= mod) x -= mod; return x;}
+template <class T> T modinvfermat(T a , T mod){return expo<T>(a , mod - 2 , mod);}
+template <class T> bool rev(T a , T b){return a > b;}
+template <class T> ll maxpower(T a , T b){ll ans = 0;while(a > 0 && a % b == 0){ans++;a /= b;}return ans;}
+template <class T> T mceil(T a, T b){if(a % b == 0) return a/b; else return a/b + 1;}
+template <class T> T lcm(T a, T b){return (a)/__gcd<T>(a, b)*(b);}
+ 
+//const int MOD = (119 << 23) + 1;
+const int MOD = 1e9 + 7;
+const ll INF = (ll) 1e18;
+const double PI = acos(-1);
+const double EPS = 1e-9;
+const int MAX = 2e9 + 5;
+//const int dx[4] = {+1, -1, 0, 0};
+//const int dy[4] = {0, 0, +1, -1};
+//const int dx[8] = {+1, +1, -1, -1, 0, 0, +1, -1};
+//const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
+ 
+///****************** SOLUTION STARTS HERE ***********************///
+///===============================================================///
+ 
+ 
+void solve() {
+	int n, m;
+	scanf("%d%d", &n, &m);
+	char a[n][m];
+	for (int i = 0; i < n; i++) {
+		scanf("%s", a[i]);
 	}
-}
-
-int main() {
-	vector<bool> tmp(N, 1);
-	vector<int> pr;
-	tmp[0] = tmp[1] = 0;
-	for (int i = 2; i < N; i++) {
-		if (tmp[i]) {
-			pr.push_back(i);
-			for (long long j = i; j * i < N; j++) tmp[i * j] = 0;
+	vector<vector<bool>> vis(n, vector<bool>(m, 0));
+	priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int> > > > pq;
+	pq.push({0, {0, 0}});
+	while (!pq.empty()) {
+		int cnt = pq.top().first;
+		int i = pq.top().second.first, j = pq.top().second.second;
+		pq.pop();
+		if (i == n - 1 && j == m - 1) {
+			printf("%d\n", cnt);
+			return;
 		}
-	}
-	int tt;
-	scanf("%d", &tt);
-	while (tt--) {
-		int n, m;
-		scanf("%d %d", &n, &m);
-		for (int i = 0; i < n; i++) {
-			vis[i] = 0;
-			edges[i].clear();
-		}
-		for (int i = 0; i < m; i++) {
-			int u, v;
-			scanf("%d %d", &u, &v);
-			--u; --v;
-			edges[u].push_back(v);
-			edges[v].push_back(u);
-		}
-		int res = 0;
-		for (int i = 0; i < n; i++) {
-			if (!vis[i]) {
-				cnt = 0;
-				dfs(i);
-				res = max(res, cnt);
+		vis[i][j] = 1;
+		int b = a[i][j] - '0';
+		const int dx[4] = {+b, -b, 0, 0};
+		const int dy[4] = {0, 0, +b, -b};
+		
+		for (int k = 0; k < 4; k++) {
+			int r = i + dx[k];
+			int c = j + dy[k];
+			
+			if (r >= 0 && c >= 0 && r < n && c < m && !vis[r][c]) {
+				pq.push({cnt + 1, {r, c}});
 			}
 		}
-		if (res == 1) printf("%d\n", -1);
-		else printf("%d\n", pr[res - 1]);
 	}
+	printf("%d\n", -1);
 }
-
+ 
+int main() {
+	io();
+	int TC = 1;
+	//scanf("%d", &TC);
+	for (int i = 1; i <= TC; i++) {
+		//cout << "Case #" << i << ": ";
+		solve();
+	}
+	return 0;
+}
