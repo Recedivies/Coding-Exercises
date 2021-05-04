@@ -104,19 +104,16 @@ const int N = 1e5 + 2;
 void solve() {
 	int n;
 	cin >> n;
-	vector<ull> a(n);
-	ull tmp = 0, cnt = 0, mx = 0;
+	vector<ll> a(n);
+	ll tmp = 0, mx = 0;
 	for (int i = 0; i < n; i++) {
 		cin >> a[i];
 		tmp = max(tmp, a[i]);
-		cnt += a[i];
 		mx += a[i];
 	}
-	ull res = cnt - tmp, ans = LONG_LONG_MAX;
-	cnt = 0;
+	ll res = mx - tmp, ans = LONG_LONG_MAX;
 	sort(a.begin(), a.end());
 	for (int i = 0; i < n; i++) {
-		cnt += a[i];
 		ans = min(ans, mx - (a[i]*(n - i)));
 	}
 	cout << min(ans, res) << '\n';
