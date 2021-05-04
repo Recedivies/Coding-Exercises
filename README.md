@@ -1,2 +1,2 @@
 # Coding-Exercises
-Competitive Programming, coding interview Solution.. Feel free to suggest better and efficient approaches
+My Competitive Programming Solution to various problem topics. Feel free to suggest better and efficient approaches. Problems are taken from many different Online Judges.
