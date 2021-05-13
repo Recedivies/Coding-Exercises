@@ -135,7 +135,6 @@ void solve() {
 	cin >> n >> m;
 	vector<vector<int>> dis(n, vector<int>(m));
 	vector<str> a(n);
-	bool ok = false;
 	int x = -1, y = -1;
 	for (int i = 0; i < n; i++) {
 		cin >> a[i];
@@ -143,7 +142,6 @@ void solve() {
 			dis[i][j] = MAX;
 			if (a[i][j] == 'A') {
 				x = i, y = j;
-				ok = true;
 			}
 		}
 	}
@@ -170,8 +168,7 @@ void solve() {
 			}
 		}
 	}
-	ok = false;
-	bool valid = false, moster = false;
+	bool ok = false, valid = false, moster = false;
 	for (int i = 0; i < sz(out); i++) {
 		vector<vector<int>> dist{dis};
 		dist[out[i].first][out[i].second] = 0;
