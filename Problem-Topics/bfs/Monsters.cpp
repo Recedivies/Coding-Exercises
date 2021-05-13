@@ -1,6 +1,6 @@
 /*
  * Author : recedivies
- * Problem Link : https://cses.fi/problemset/task/1671
+ * Problem Link : https://cses.fi/problemset/task/1194
  * Mei 13, 2021
  */
 #include <bits/stdc++.h>
@@ -128,10 +128,111 @@ const int dy[4] = {0, +1, 0, -1};
 //const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
 const int N = 1e5 + 2;
 
+vector<pair<int, int>> out;
+ 
+void solve() {
+	int n, m;
+	cin >> n >> m;
+	vector<vector<int>> dis(n, vector<int>(m));
+	vector<str> a(n);
+	bool ok = false;
+	int x = -1, y = -1;
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
+		for (int j = 0; j < m; j++) {
+			dis[i][j] = MAX;
+			if (a[i][j] == 'A') {
+				x = i, y = j;
+				ok = true;
+			}
+		}
+	}
+	map<pair<int, int>, pair<int, int>> mp;
+	mp[{x, y}] = {-1, -1};
+	queue<pair<int, int> > q;
+	q.push({x, y});
+	vector<vector<int>> distance{dis};
+	distance[x][y] = 0;
+	while (!q.empty()) {
+		int u = q.front().first, v = q.front().second;
+		q.pop();
+		if (u == 0 || v == 0 || u == n - 1 || v == m - 1) {
+			out.push_back({u, v});
+		}
+		for (int i = 0; i < 4; i++) {
+			int r = u + dx[i];
+			int c = v + dy[i];
+			
+			if (r >= 0 && c >= 0 && r < n && c < m && a[r][c] != '#' && a[r][c] != 'M' && distance[r][c] >= distance[u][v]) {
+				distance[r][c] = distance[u][v] + 1;
+				q.push({r, c});
+				mp[{r, c}] = {u, v};
+			}
+		}
+	}
+	ok = false;
+	bool valid = false, moster = false;
+	for (int i = 0; i < sz(out); i++) {
+		vector<vector<int>> dist{dis};
+		dist[out[i].first][out[i].second] = 0;
+		queue<pair<int, pair<int, int> > > qq;
+		qq.push({out[i].first, {out[i].second, 0}});
+		while (!qq.empty()) {
+			int u = qq.front().first, v = qq.front().second.first, w = qq.front().second.second;
+			qq.pop();
+			if (a[u][v] == 'M') {
+				moster = true;
+				if (distance[out[i].first][out[i].second] < w) {
+					x = out[i].first, y = out[i].second;
+					ok = true;
+				}
+				break; 
+			}
+			if (u == 0 || v == 0 || u == n - 1 || v == m - 1) {
+				x = out[i].first, y = out[i].second;
+				valid = true;
+			}
+			for (int j = 0; j < 4; j++) {
+				int r = u + dx[j];
+				int c = v + dy[j];
+				
+				if (r >= 0 && c >= 0 && r < n && c < m && a[r][c] != '#' && dist[r][c] > dist[u][v]) {
+					dist[r][c] = dist[u][v] + 1;
+					qq.push({r, {c, w + 1}});
+				} 
+			}
+		}
+		if (ok) break;
+		if (valid && !moster) {
+			ok = true;
+		}
+	}
+	if (ok) {
+		vector<char> path;
+		while (x != -1 || y != -1) {
+			int p1 = mp[{x, y}].first;
+			int p2 = mp[{x, y}].second;
+			if (p1 == -1 && p2 == -1) break;
+			if (p1 - 1 == x) path.push_back('U');
+			if (p1 + 1 == x) path.push_back('D');
+			if (p2 - 1 == y) path.push_back('L');
+			if (p2 + 1 == y) path.push_back('R');
+			x = p1; y = p2;
+		}
+		cout << "YES\n" << sz(path) << "\n";
+		for (int i = sz(path) - 1; i >= 0; i--) cout << path[i];
+		return;
+	}
+	cout << "NO\n";
+}
 
 int main() {
 	io();
-	
+	int TC = 1;
+	//cin >> TC;
+	for (int i = 1; i <= TC; i++) {
+		//cout << "Case #" << i << ": ";
+		solve();
+	}
 	return 0;
 }
-
