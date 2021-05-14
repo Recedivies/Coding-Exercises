@@ -138,14 +138,13 @@ void solve() {
 	cin >> a >> b >> c >> d;
 	map<pair<int, int>, pair<int, int>> m;
 	m[{a, b}] = {-1, -1};
-	queue<pair<int, pair<int, int>>> q;
-	q.push({a, {b, 0}});
+	queue<pair<int, int>> q;
+	q.push({a, b});
 	while (!q.empty()) {
 		int u = q.front().first, v = q.front().second.first;
-		int t = q.front().second.second;
 		q.pop();
+		
 		if (u == c && v == d) {
-			//cout << m;
 			vector<str> path;
 			while (u != -1 || v != -1) {
 				int p1 = m[{u, v}].first;
@@ -162,18 +161,18 @@ void solve() {
 			cout << sz(path) << '\n';
 			sort(path.begin(), path.end());
 			reverse(path.begin(), path.end());
-			
 			for (auto val : path) cout << val << " ";
 			return;
 		}
 		if (vis[u][v]) continue;
 		vis[u][v] = 1;
+		
 		for (int i = 0; i < 6; i++) {
 			int rr = dx[i] + u;
 			int cc = dy[i] + v;
 			if (rr >= 0 && cc >= 0 && rr < n && cc < n && !vis[rr][cc]) {
 				if (m.find({rr, cc}) == m.end()) m[{rr, cc}] = {u, v};
-				q.push({rr, {cc, t+1}});
+				q.push({rr, cc});
 			}
 		}
 	}
