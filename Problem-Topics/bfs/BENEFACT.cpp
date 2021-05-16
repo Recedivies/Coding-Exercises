@@ -126,31 +126,27 @@ const int dx[4] = {+1, 0, -1, 0};
 const int dy[4] = {0, +1, 0, -1};
 //const int dx[8] = {+1, +1, -1, -1, 0, 0, +1, -1};
 //const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
-const int N = 1e5 + 2;
+const int N = 5e4;
 
 
 int n, a, b, w;
-ll ans;
-bool vis[N + 2];
 vector<ll> dis(N + 2, 0);
 vector<pair<int, int> > edges[N + 2];
 
 int bfs(int u) {
 	for (int i = 1; i <= n; i++) {
-		dis[i] = 0;
-		vis[i] = 0;
+		dis[i] = INF;
 	}
 	queue<int> q;
 	q.push(u);
+	dis[u] = 0;
 	while (!q.empty()) {
 		int v = q.front();
 		q.pop();
 		
-		if (vis[v]) continue;
-		vis[v] = 1;
 		for (pair<int, int> e: edges[v]) {
-			if (!vis[e.first]) {
-				dis[e.first] += dis[v] + e.second;
+			if (dis[e.first] > dis[v] + e.second) {
+				dis[e.first] = dis[v] + e.second;
 				q.push({e.first});
 			}
 		}
