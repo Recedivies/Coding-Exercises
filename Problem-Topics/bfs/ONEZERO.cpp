@@ -128,20 +128,42 @@ const int dy[4] = {0, +1, 0, -1};
 //const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
 const int N = 1e5 + 2;
 
+int n;
+
+int isValid(string s) {
+	int ret = 0;
+	for (int i = 0; i < (int) s.size(); i++) {
+		ret = (ret * 10 + (int)s[i] - '0') % n;
+	}
+	return ret;
+}
+
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	
+	int tt;
+	cin >> tt;
+	while (tt--) {
+		cin >> n;
+		queue<string> q;
+		q.push("1");
+		while (!q.empty()) {
+			string v = q.front();
+			q.pop();
+			if (isValid(v) == 0) {
+				cout << v << '\n';
+				break;
+			}
+			q.push(v + "0");
+			q.push(v + "1");
+		}
+	}
 	return 0;
 }
 /*
-<<<<<<< HEAD
-
-=======
-	     1 
-	 /      \
-	10       11
-       /  \      / \
-    100   101  110  111
->>>>>>> a2e5bd34b215bdc78b2770a38880512eb51cdb19
+			    1 
+			/      \
+		 10       11
+		/  \      / \
+ 100   101  110  111
 */
