@@ -129,7 +129,7 @@ const int dy[4] = {0, +1, 0, -1};
 const int N = 1e5 + 2;
 
 int n;
-g
+
 int isValid(string s) {
 	int ret = 0;
 	for (int i = 0; i < (int) s.size(); i++) {
