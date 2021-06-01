@@ -151,8 +151,6 @@ void dfs(int v, int p = -1) {
 }
 
 int main() {
-	//freopen("mooyomooyo.in", "r", stdin);
-	//freopen("mooyomooyo.out", "w", stdout);
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	while (cin >> n >> c && (n && c)) {
