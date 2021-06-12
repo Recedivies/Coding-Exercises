@@ -138,11 +138,11 @@ class dsu {
     p.resize(n);
     size.resize(n);
     for (int i = 1; i < n; i++) {
-			p[i] = i;
-			size[i] = 1;
-		}
+	p[i] = i;
+	size[i] = 1;
+    }
   }
- 
+	
   inline int get(int x) {
     return (x == p[x] ? x : (p[x] = get(p[x])));
   }
@@ -151,14 +151,14 @@ class dsu {
     x = get(x);
     y = get(y);
     if (x != y) {
-			if (size[x] < size[y]) {
-				swap(x, y);
-			}
-      p[y] = x;
-      size[x] += size[y];
-      return true;
-    }
-    return false;    
+	if (size[x] < size[y]) {
+		swap(x, y);
+	}
+      	p[y] = x;
+      	size[x] += size[y];
+      	return true;
+   }
+   return false;    
   }
 };
  
@@ -167,7 +167,7 @@ int main() {
 	int tt;
 	cin >> tt;
 	while (tt--) {
-		map<str, int> m;
+	   	map<str, int> m;
 		int n, cnt = 0;
 		cin >> n;
 		dsu d(n + 5);
