@@ -17,6 +17,7 @@ typedef string str;
 #define F first
 #define S second
 #define sz(a) ((int)(a).size())
+#define lsi(a) (a & (-a))
 #define mset(a, b) memset(a, b, sizeof(a))
 #define print(a, n) for(int _i = 0 ; _i < n ; _i++) cout << a[_i] << " "; cout << '\n';
 #define print2(a, n, m) for(int _i = 0 ; _i < n ; _i++){for(int _j = 0 ; _j < m ; _j++){cout << a[_i][_j] << " ";} cout << '\n';}
