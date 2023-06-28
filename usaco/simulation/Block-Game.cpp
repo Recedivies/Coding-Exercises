@@ -1,8 +1,3 @@
-/*
- * Author : recedivies
- * Problem Link : http://www.usaco.org/index.php?page=viewproblem2&cpid=664
- * Jun 28, 2023
- */
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -11,7 +6,6 @@ typedef long long ll;
 typedef long double ld;
 typedef string str;
 
-#define io() ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 #define PB push_back
 #define MP make_pair
 #define F first
@@ -122,20 +116,54 @@ const ll INF = (ll) 1e18;
 const double PI = acos(-1);
 const double EPS = 1e-9;
 const int MAX = 2e9;
-const int dx[4] = {+1, 0, -1, 0};
-const int dy[4] = {0, +1, 0, -1};
-//const int dx[8] = {+1, +1, -1, -1, 0, 0, +1, -1};
-//const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
-const int N = 1e5 + 69;
+//const int dx[4] = {+1, 0, -1, 0};
+//const int dy[4] = {0, +1, 0, -1};
+const int dx[8] = {+1, +1, -1, -1, 0, 0, +1, -1};
+const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
+const int N = 2e5 + 69;
 
-
-
-int main() {
-	io();
-
-	return 0;
+void io() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 }
 
+int main(){
+	io();
+	freopen("blocks.in", "r", stdin);
+	freopen("blocks.out", "w", stdout);
+	int n;
+	cin >> n;
+	vector<vector<int>> a(n, vector<int>(26, 0));
+	vector<vector<str>> s(n, vector<str>(2));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < 2; j++) {
+			cin >> s[i][j];
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; i && j < 26; j++) {
+			a[i][j] = a[i - 1][j];
+		}
+		vector<vector<int>> freq(26, vector<int>(2, 0));
+		for (int j = 0; j < 2; j++) {
+			for (int k = 0; k < sz(s[i][j]); k++) {
+				int val = s[i][j][k] - 'a';
+				freq[val][j] += 1;
+			}
+		}
+		for (int j = 0; j < 26; j++) {
+			int cnt = max(freq[j][0], freq[j][1]);
+			if (!i) a[i][j] += cnt;
+			if (i) a[i][j] = a[i - 1][j] + cnt;
+		}
+	}
+	for (int i = 0; i < 26; i++) {
+		cout << a[n - 1][i] << "\n";
+	}
+	return 0;
+}
 /*
+
+
 
 */
