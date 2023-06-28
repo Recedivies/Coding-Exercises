@@ -1,8 +1,3 @@
-/*
- * Author : recedivies
- * Problem Link : http://www.usaco.org/index.php?page=viewproblem2&cpid=1276
- * Jun 28, 2023
- */
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -11,7 +6,6 @@ typedef long long ll;
 typedef long double ld;
 typedef string str;
 
-#define io() ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 #define PB push_back
 #define MP make_pair
 #define F first
@@ -126,16 +120,60 @@ const int dx[4] = {+1, 0, -1, 0};
 const int dy[4] = {0, +1, 0, -1};
 //const int dx[8] = {+1, +1, -1, -1, 0, 0, +1, -1};
 //const int dy[8] = {+1, -1, -1, +1, +1, -1, 0, 0};
-const int N = 1e5 + 69;
+const int N = 2e5 + 69;
 
-
-
-int main() {
-	io();
-	
-	return 0;
+void io() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 }
 
+struct cow {
+	int l, r, c;
+};
+
+struct air {
+	int l, r, p, m;
+};
+
+int main(){
+	io();
+	//freopen("blocks.in", "r", stdin);
+	//freopen("blocks.out", "w", stdout);
+	int n, m;
+	cin >> n >> m;
+	vector<cow> a(n);
+	for (int i = 0; i < n; i++) {
+		cin >> a[i].l >> a[i].r >> a[i].c;
+	}
+	vector<air> b(m);
+	for (int i = 0; i < m; i++) {
+		cin >> b[i].l >> b[i].r >> b[i].p >> b[i].m;
+	}
+	int ans = MAX;
+	for (int mask = 0; mask < (1 << m); mask++) {
+		vector<int> freq(101, 0);
+		int cnt=0;
+		for (int i = 0; i < m; i++) {
+			if (mask & (1 << i)) {
+				for (int k = b[i].l; k <= b[i].r; k++) {
+					freq[k] += b[i].p;
+				}
+				cnt += b[i].m;
+			}
+		}
+		bool ok=1;
+		for (int i = 0; i < n; i++) {
+			for (int k = a[i].l; ok && k <= a[i].r; k++) {
+				ok&=a[i].c<=freq[k];
+			}
+		}
+		if (ok) ans = min(ans, cnt);
+	}
+	cout << ans << '\n';
+	return 0;
+}
 /*
+
+
 
 */
