@@ -133,7 +133,7 @@ int main(){
 	freopen("blocks.out", "w", stdout);
 	int n;
 	cin >> n;
-	vector<vector<int>> a(n, vector<int>(26, 0));
+	vector<int> a(26, 0);
 	vector<vector<str>> s(n, vector<str>(2));
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < 2; j++) {
@@ -141,9 +141,6 @@ int main(){
 		}
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; i && j < 26; j++) {
-			a[i][j] = a[i - 1][j];
-		}
 		vector<vector<int>> freq(26, vector<int>(2, 0));
 		for (int j = 0; j < 2; j++) {
 			for (int k = 0; k < sz(s[i][j]); k++) {
@@ -153,12 +150,11 @@ int main(){
 		}
 		for (int j = 0; j < 26; j++) {
 			int cnt = max(freq[j][0], freq[j][1]);
-			if (!i) a[i][j] += cnt;
-			if (i) a[i][j] = a[i - 1][j] + cnt;
+			a[j] += cnt;
 		}
 	}
 	for (int i = 0; i < 26; i++) {
-		cout << a[n - 1][i] << "\n";
+		cout << a[i] << "\n";
 	}
 	return 0;
 }
