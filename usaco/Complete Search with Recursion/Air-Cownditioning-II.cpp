@@ -1,7 +1,7 @@
 /*
  * Author : recedivies
- * Problem Link :
- * Jun 27, 2023
+ * Problem Link : http://www.usaco.org/index.php?page=viewproblem2&cpid=1276
+ * Jun 28, 2023
  */
 #include <bits/stdc++.h>
 using namespace std;
@@ -132,8 +132,6 @@ const int N = 1e5 + 69;
 
 int main() {
 	io();
-	//freopen("lostcow.in", "r", stdin);
-	//freopen("lostcow.out", "w", stdout);
 	
 	return 0;
 }
